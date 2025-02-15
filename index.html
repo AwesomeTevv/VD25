@@ -5,30 +5,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <!-- <title>Happy Valentine's Day</title> -->
   <title>Happy Valentine's Day</title>
   <link rel="stylesheet" href="./style.css">
-  <!-- <link rel="icon" href="./favicon.ico" type="image/x-icon"> -->
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Fira+Code:wght@300..700&display=swap"
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kurale&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <canvas id="playground"></canvas>
   <canvas id="background"></canvas>
 
+  <div id="song-choice">
+    <h2>Select Song Language</h2>
+    <button id="english">English</button>
+    <button id="hindi">हिंदी</button>
+    <button id="french">French</button>
+  </div>
+
   <h1 id="message"></h1>
 
   <script src="script.js"></script>
-  <!-- <script src="bezier.js"></script> -->
   <script src="background.js"></script>
   <img id="polaroid" src="Polaroid2.png" alt="Polaroid">
-
-
+  <audio id="song" src="Zara_Sa.mp3"></audio>
 </body>
 
 </html>

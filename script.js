@@ -16,7 +16,7 @@ const messages = [
     "If nothing else",
     "I hope you know that you are appreciated",
     "",
-    "Happy Valentine's Day, Ariyasha"
+    "Happy Valentine's Day"
 ];
 
 // const messages = [
@@ -110,10 +110,10 @@ function changeMessage() {
 }
 
 // Start the typing cycle
-changeMessage();
+// changeMessage();
 
 // convasFilm Background with Film Grain
-const conavasFilm = document.getElementById("background");
+const conavasFilm = document.getElementById("playground");
 const ctx = conavasFilm.getContext("2d");
 
 function resizeconavasFilm() {
@@ -133,9 +133,55 @@ function addFilmGrain() {
         pixels[i] = noise; // Red channel
         pixels[i + 1] = noise; // Green channel
         pixels[i + 2] = noise; // Blue channel
-        pixels[i + 3] = 10; // Alpha channel (opacity)
+        pixels[i + 3] = 0.05 * 255; // Alpha channel (opacity)
     }
     ctx.putImageData(imageData, 0, 0);
 }
 
 setInterval(addFilmGrain, 100);
+
+document.addEventListener("DOMContentLoaded", () => {
+    const songChoice = document.getElementById('song-choice');
+    const engBut = document.getElementById('english');
+    const hinBut = document.getElementById('hindi');
+    const freBut = document.getElementById('french');
+
+    const audio = document.getElementById("song");
+
+    function startAnimation(song) {
+        audio.src = song;
+        audio.volume = 0.1;
+
+        audio.play().catch(() => console.log("Autoplay blocked, waiting for user interaction."));
+        
+        songChoice.style.display = "none";
+
+        changeMessage();
+    }
+
+    engBut.addEventListener("click", () => {
+        startAnimation("her.mp3");
+    });
+
+    hinBut.addEventListener("click", () => {
+        startAnimation("Zara_Sa.mp3");
+    });
+
+    freBut.addEventListener("click", () => {
+        startAnimation("arcane.mp3");
+    });
+
+    // function playMusic() {
+    //     audio.play().then(() => {
+    //         console.log("Music is playing!");
+    //     }).catch((error) => {
+    //         console.log("Autoplay blocked. Waiting for user interaction.");
+    //     });
+    // }
+
+    // // Try to play music immediately
+    // playMusic();
+
+    // // Ensure music starts when user clicks anywhere on the page
+    // document.addEventListener("click", playMusic, { once: true });
+});

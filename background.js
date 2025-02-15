@@ -46,15 +46,24 @@ function rect() {
     graphics.strokeRect(-50, -50, 100, 100);
 }
 
+function bezierCurve2(x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2, color = "black") {
+    // graphics.strokeStyle = color;
+    // graphics.lineWidth = lineWidth;
+    graphics.beginPath();
+    graphics.moveTo(x1, y1);  // Start point
+    graphics.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x2, y2); // Control points and end point
+    graphics.stroke();
+}
+
 let lastJitterOffsets = []; // Store previous jitter offsets
 
 function bezierCurve(x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2, color = "black") {
-    let segments = 30; // Number of segments to create jitter
+    let segments = 50; // Number of segments to create jitter
 
     if (frameNum % jitterRate === 0 || lastJitterOffsets.length === 0) {
         lastJitterOffsets = Array.from({ length: segments + 1 }, () => ({
-            x: (Math.random() - 0.5) * 2, // Small random jitter
-            y: (Math.random() - 0.5) * 2
+            x: (Math.random() - 0.5) * 1, // Small random jitter
+            y: (Math.random() - 0.5) * 1
         }));
     }
 
@@ -89,6 +98,35 @@ function bezierCurve(x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2, color = "black") {
 function circle() {
     graphics.beginPath();
     graphics.arc(0, 0, 50, 0, 2 * Math.PI);
+    graphics.stroke();
+}
+
+function circle() {
+    let segments = 250;
+    let maxJitter = 1;
+
+    // Only update jitter every `jitterRate` frames
+    if (frameNum % jitterRate === 0) {
+        for (let i = 0; i < segments; i++) {
+            lastJitter[i] = (Math.random() - 0.5) * maxJitter;
+        }
+    }
+
+    graphics.beginPath();
+    for (let i = 0; i <= segments; i++) {
+        let angle = (i / segments) * (2 * Math.PI);
+        let r = 50 + lastJitter[i % segments]; // Use stored jitter
+        let x = r * Math.cos(angle);
+        let y = r * Math.sin(angle);
+
+        if (i === 0) {
+            graphics.moveTo(x, y);
+        } else {
+            graphics.lineTo(x, y);
+        }
+    }
+    graphics.closePath();
+    // graphics.fillStyle = `rgba(0, 0, 0, ${0.9 + Math.random() * 0.1})`;
     graphics.stroke();
 }
 
@@ -138,8 +176,6 @@ function filledCircle() {
     // graphics.fillStyle = `rgba(0, 0, 0, ${0.9 + Math.random() * 0.1})`;
     graphics.fill();
 }
-
-
 
 function hill() {
     graphics.save();
@@ -258,31 +294,93 @@ function moon() {
     graphics.restore();
 }
 
-function plant() {
+function flower() {
     graphics.save();
-    graphics.translate(canvas.width / 2, canvas.height / 2);
-    bezierCurve(0, -160, 90, 0, -150, 100, -45, 250);
+    // graphics.translate(canvas.width / 2, canvas.height / 2);
+    bezierCurve(22, 175, -50, 0, 25, 0, 22, -50);
+    bezierCurve(-10, 60, 70, 24, -5, -21, -10, 60);
+    bezierCurve(-8,87,-24,31,-99,72,-8,87);
+    bezierCurve(0, -119, -6, -21, 83, -31, 19, -128);
+    bezierCurve(19, -128, 83, -31, 148, -107, 29, -148);
+    bezierCurve(29, -148, 146, -147, 122, -229, 21, -172);
+    bezierCurve(21, -172, 81, -249, 17, -304, 0, -180);
+    bezierCurve(0, -180, -26, -304, -96, -240, -20, -173);
+    bezierCurve(-20, -173, -95, -258, -154, -188, -29, -152);
+    bezierCurve(-29, -152, -153, -137, -99, -53, -21, -132);
+    bezierCurve(-21, -132, -109, -59, -34, -15, 0, -119);
     graphics.restore();
-
     graphics.save();
-    graphics.translate(canvas.width / 2, canvas.height / 2);
-    var cpx = -50;
-    var cpy = 120;
-    bezierCurve(-72, 172, cpx - 2, cpy + 5, cpx + 5, cpy, -10, 96);
+    // graphics.translate(canvas.width / 2, canvas.height / 2);
+    graphics.translate(0, -150);
+    graphics.scale(0.6, 0.6);
+    graphics.lineWidth = 12;
+    circle();
     graphics.restore();
+}
 
+function flower2() {
     graphics.save();
-    graphics.translate(canvas.width / 2, canvas.height / 2);
-    var cpx2 = 50;
-    var cpy2 = -100;
-    bezierCurve(20, -70, cpx2 - 5, cpy2 + 3, cpx2 + 5, cpy2 - 3, 70, -110);
+    // graphics.translate(canvas.width / 2, canvas.height / 2);
+    // graphics.lineWidth = 1;
+    bezierCurve2(-6, 221, 6, 175, -31, 170, -5, 95);
+    bezierCurve2(-5, 95, -28, -41, 12, 26, -7, -35);
+    bezierCurve2(-7, -35, -10, -45, -8, -77, -15, -93);
+    bezierCurve2(-5, 91, 44, 78, 31, 28, 39, 34);
+    bezierCurve2(-5, 91, -16, 62, 31, 28, 39, 34);
+    bezierCurve2(-11, 4, -34, 12, -60, -16, -82, 32);
+    bezierCurve2(-11, 4, -32, -8, -36, 44, -82, 32);
+    bezierCurve2(-11, 4, -17, -19, -23, -35, -56, -44);
+    bezierCurve2(-11, 4, -28, -21, -53, -7, -56, -44);
+    bezierCurve2(-13, -92, -1, -131, -23, -160, -67, -172);
+    bezierCurve2(-13, -92, -59, -105, -24, -139, -67, -172);
+    bezierCurve2(-13, -92, 48, -86, 49, -121, 77, -128);
+    bezierCurve2(77, -128, 75, -137, 41, -138, 15, -128);
+    bezierCurve2(-13, -92, -43, -83, -67, -124, -82, -130);
+    bezierCurve2(-13, -92, -43, -83, -22, -144, -82, -130);
+    bezierCurve2(-13, -92, -26, -122, -11, -177, 24, -163);
+    bezierCurve2(-13, -92, 39, -107, -3, -135, 24, -163);
+    bezierCurve2(-13, -92, -6, -79, 10, -60, 31, -62);
+    bezierCurve2(-13, -92, 14, -92, 24, -69, 31, -62);
+    bezierCurve2(-13, -92, -29, -91, -46, -68, -49, -53);
+    bezierCurve2(-13, -92, -18, -94, -25, -64, -49, -53);
+    bezierCurve2(-20, -146, -14, -160, -4, -178, 9, -175);
+    bezierCurve2(-58, -171, -54, -178, -38, -187, -22, -176);
+    bezierCurve2(-22, -176, -12, -195, -13, -192, 17, -174);
+    bezierCurve2(17, -174, 42, -190, 30, -159, 44, -149);
+    bezierCurve2(44, -149, 36, -144, 24, -138, 14, -132);
     graphics.restore();
+}
 
+function flower3() {
     graphics.save();
-    graphics.translate(canvas.width / 2, canvas.height / 2);
-    var cpx3 = -35;
-    var cpy3 = -100;
-    bezierCurve(10, -30, cpx3, cpy3 + 10, cpx3, cpy3 - 10, -65, -125, "red");
+    // graphics.translate(canvas.width / 2, canvas.height / 2);
+    // graphics.lineWidth = 1;
+    bezierCurve(-6, 221, 6, 175, -31, 170, -5, 95);
+    bezierCurve(-5, 95, -28, -41, 12, 26, -7, -35);
+    bezierCurve(-7, -35, -10, -45, -8, -77, -15, -93);
+    bezierCurve(-5, 91, 44, 78, 31, 28, 39, 34);
+    bezierCurve(-5, 91, -16, 62, 31, 28, 39, 34);
+    bezierCurve(-11, 4, -34, 12, -60, -16, -82, 32);
+    bezierCurve(-11, 4, -32, -8, -36, 44, -82, 32);
+    bezierCurve(-11, 4, -17, -19, -23, -35, -56, -44);
+    bezierCurve(-11, 4, -28, -21, -53, -7, -56, -44);
+    bezierCurve(-13, -92, -1, -131, -23, -160, -67, -172);
+    bezierCurve(-13, -92, -59, -105, -24, -139, -67, -172);
+    bezierCurve(-13, -92, 48, -86, 49, -121, 77, -128);
+    bezierCurve(77, -128, 75, -137, 41, -138, 15, -128);
+    bezierCurve(-13, -92, -43, -83, -67, -124, -82, -130);
+    bezierCurve(-13, -92, -43, -83, -22, -144, -82, -130);
+    bezierCurve(-13, -92, -26, -122, -11, -177, 24, -163);
+    bezierCurve(-13, -92, 39, -107, -3, -135, 24, -163);
+    bezierCurve(-13, -92, -6, -79, 10, -60, 31, -62);
+    bezierCurve(-13, -92, 14, -92, 24, -69, 31, -62);
+    bezierCurve(-13, -92, -29, -91, -46, -68, -49, -53);
+    bezierCurve(-13, -92, -18, -94, -25, -64, -49, -53);
+    bezierCurve(-20, -146, -14, -160, -4, -178, 9, -175);
+    bezierCurve(-58, -171, -54, -178, -38, -187, -22, -176);
+    bezierCurve(-22, -176, -12, -195, -13, -192, 17, -174);
+    bezierCurve(17, -174, 42, -190, 30, -159, 44, -149);
+    bezierCurve(44, -149, 36, -144, 24, -138, 14, -132);
     graphics.restore();
 }
 
@@ -320,12 +418,46 @@ var sparkles = [
     { x: 0.968, y: 0.422, type: Math.random() > 0.5 ? 1 : 2, scale: 0.15 },
 ];
 
+var flowers = [
+    { x: -850, y: 250, s: 0.25, c: DEFAULT, type: 1, flip: 1 },
+    { x: -750, y: 385, s: 0.25, c: DEFAULT, type: 2, flip: 1 },
+    { x: -605, y: 315, s: 0.25, c: DEFAULT, type: 1, flip: -1 },
+    { x: -400, y: 335, s: 0.25, c: DEFAULT, type: 2, flip: -1 },
+    { x: -200, y: 405, s: 0.25, c: DEFAULT, type: 1, flip: 1 },
+
+    { x: 850, y: 400, s: 0.15, c: DEFAULT, type: 2, flip: 1 },
+    { x: 750, y: 305, s: 0.15, c: DEFAULT, type: 1, flip: 1 },
+    { x: 605, y: 365, s: 0.15, c: DEFAULT, type: 2, flip: -1 },
+    { x: 400, y: 335, s: 0.15, c: DEFAULT, type: 1, flip: -1 },
+    { x: 200, y: 405, s: 0.15, c: DEFAULT, type: 2, flip: 1 },
+
+    { x: -180, y: 285, s: 0.1, c: DEFAULT, type: 2, flip: -1 },
+    { x: -120, y: 300, s: 0.1, c: DEFAULT, type: 1, flip: 1 },
+    { x: -50, y: 335, s: 0.1, c: DEFAULT, type: 2, flip: 1 },
+    { x: 20, y: 335, s: 0.1, c: DEFAULT, type: 1, flip: -1 },
+
+    { x: 40, y: 285, s: 0.05, c: "white", type: 2, flip: 1 },
+    { x: 120, y: 300, s: 0.05, c: "white", type: 1, flip: 1 },
+    { x: 150, y: 275, s: 0.05, c: "white", type: 2, flip: -1 },
+    { x: 200, y: 295, s: 0.05, c: "white", type: 1, flip: -1 },
+    { x: 250, y: 255, s: 0.05, c: "white", type: 2, flip: 1 },
+];
+
 function getFadeFactor(startFrame, fadeDuration) {
     let fadeProgress = (frameNum - startFrame) / fadeDuration;
     return Math.min(Math.max(fadeProgress, 0), 1);
 }
 
 function drawScene() {
+
+    graphics.save();
+    graphics.translate((canvas.width / 2) + 8, (canvas.height / 2) + 100);
+    graphics.strokeStyle = "#ffe8e6";
+    // graphics.strokeStyle = "black";
+    graphics.lineWidth = 4;
+    flower2();
+    graphics.restore();
+
     let fadeDuration = 500;
 
     // Load this in first
@@ -404,6 +536,23 @@ function drawScene() {
     hill();
     graphics.restore();
 
+    for (let i = 0; i < flowers.length; i++) {
+        graphics.save();
+        graphics.translate(
+            canvas.width / 2 + flowers[i].x, 
+            canvas.height / 2 + flowers[i].y
+        );
+        graphics.scale(flowers[i].flip * flowers[i].s, flowers[i].s);
+        graphics.strokeStyle = flowers[i].c;
+        let flowerFade = getFadeFactor(8 * fadeDuration + i * 10, fadeDuration);
+        graphics.globalAlpha = flowerFade;
+        var fun1 = flower;
+        if (flowers[i].type == 2) { fun1 = flower3 }
+        fun1();
+        graphics.restore();
+    }
+
+
     // Background Dots
 
     for (let i = 0; i < dots.length; i++) {
@@ -414,7 +563,7 @@ function drawScene() {
             canvas.height * dots[i].y
         );
         graphics.scale(dots[i].scale, dots[i].scale);
-        let dotFade = getFadeFactor(8 * fadeDuration + i * 10, fadeDuration);
+        let dotFade = getFadeFactor(9 * fadeDuration + i * 10, fadeDuration);
         graphics.globalAlpha = dotFade;
         blinkingDot(dots[i].offset);
         graphics.restore();
@@ -439,37 +588,6 @@ function drawScene() {
     }
 
 }
-
-// drawScene();
-// const colour = "#f38375";
-
-// drawBezierCurve(0, 738, 0, 5, 662, 914, 662, 914);
-
-// function getMousePos(event) {
-//     const rect = canvas.getBoundingClientRect(); // Get canvas position
-//     const x = event.clientX - rect.left; // Adjust for canvas offset
-//     const y = event.clientY - rect.top;
-//     return { x, y };
-// }
-
-// function redrawCanvas(x, y) {
-//     // Clear canvas
-//     graphics.clearRect(0, 0, canvas.width, canvas.height);
-
-//     // Optional: Draw a background for visibility
-//     graphics.fillStyle = "white";
-//     graphics.fillRect(0, 0, canvas.width, canvas.height);
-
-//     // Draw the text
-//     graphics.fillStyle = "black";
-//     graphics.font = "16px Arial";
-//     graphics.fillText(`(${Math.round(x)}, ${Math.round(y)})`, x + 10, y - 10);
-// }
-
-// canvas.addEventListener("mousemove", (event) => {
-//     const { x, y } = getMousePos(event);
-//     redrawCanvas(x, y);
-// });
 
 function updateFrame() {
     frameNum++;
